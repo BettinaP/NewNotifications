@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         UNUserNotificationCenter.current().delegate = self
+        configureUserNotifications()
         
         return true
     }
@@ -45,8 +46,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    private func configureUSerNotifications(){
-        let favAction = UNNotificationAction(identifier: "crown", title: "Crown", options: [])
+    private func configureUserNotifications(){
+        
+        let favAction = UNNotificationAction(identifier: "crown", title: "👑 You're a Queen!", options: [])
         let dismissAction = UNNotificationAction(identifier: "dismiss", title: "Dismiss", options: [])
         
         let category = UNNotificationCategory(identifier: "myNotificiationCategory", actions: [favAction, dismissAction], intentIdentifiers: [], options: [])
@@ -58,12 +60,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 //creating extension to deal with getting notifications while still in the app rather than having to exit and go to home screen (so receive notif while app in foreground)
+
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(.alert)
     }
     
+    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        //can increment a favorite counter here if we wanted
+        
+        print("response recieved for \(response.actionIdentifier)")
+        completionHandler()
+    }
     
 }
 
